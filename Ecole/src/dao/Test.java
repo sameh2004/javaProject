@@ -4,8 +4,9 @@ package dao;
 import java.sql.SQLException;
 import java.util.List;
 
+import model.Enseignant;
 
-import model.Utilisateur;
+
 
 
 
@@ -15,15 +16,12 @@ public class Test {
         try {
         	
         	
-        	UtilisateurDAO dao=new UtilisateurDAO();
-        	Utilisateur u = dao.getByID(10555);
-        	
-        	dao.delete(u);
-        	
-        	
-        	List<Utilisateur> l;
+        	EnseignantDAO dao=new EnseignantDAO();
+        	Enseignant  p=new Enseignant(102564,"ldfl3f52","ali","malek","math");
+        	dao.add(p);
+        	List<Enseignant> l;
         	l=dao.getAll();
-        	for (Utilisateur c : l) {
+        	for (Enseignant c : l) {
                 System.out.println(c);
             }
         } catch (SQLException e) {
