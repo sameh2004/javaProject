@@ -80,7 +80,7 @@ package dao;
 	    @Override
 	    public void update(Personnel p) throws SQLException {
 	        Connection cx = SingletonConnection.getInstance();
-	        String req = "UPDATE enseignant SET pass = ?, nom = ?, prenom = ?, niveau = ?, poste = ? WHERE log = ?";
+	        String req = "UPDATE personnel SET pass = ?, nom = ?, prenom = ?, niveau = ?, poste = ? WHERE log = ?";
 	        PreparedStatement ps = cx.prepareStatement(req);
 	        ps.setString(1, p.getPass());
 	        

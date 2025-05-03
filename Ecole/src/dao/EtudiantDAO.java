@@ -24,11 +24,10 @@ import model.Etudiant;
 			ps=cx.prepareStatement(req);
 			ps.setInt(1,E.getLog());
 			ps.setString(2,E.getPass());
-			
-			ps.setString(4,E.getNom());
-			ps.setString(5,E.getPrenom());
-			ps.setInt(6, E.getNiveau());
-			ps.setString(7,E.getSpecialitéEtudiant());
+			ps.setString(3,E.getNom());
+			ps.setString(4,E.getPrenom());
+			ps.setInt(5, E.getNiveau());
+			ps.setString(6,E.getSpecialitéEtudiant());
 			ps.executeUpdate();
 			ps.close();
 		}
