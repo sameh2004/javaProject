@@ -8,8 +8,22 @@ import model.Matiere;
 public class MatiereDAO implements IDAO<Matiere> {
 
 	@Override
-	public void add(Matiere object) throws SQLException {
-		// TODO Auto-generated method stub
+	public void add(Matiere m) throws SQLException {
+		{
+			Connection cx = SingletonConnection.getInstance();
+			String req = "INSERT INTO Matiere (id,type,nom) VALUES ( ?, ?, ?)";
+			PreparedStatement ps = cx.prepareStatement(req);
+			ps.setInt(1, m.getID());
+			ps.setString(2, m.getType());
+
+			ps.setString(3, m.getNom());
+
+			ps.executeUpdate();
+			ps.close();
+		}
+
+
+
 		
 	}
 
