@@ -1,6 +1,10 @@
 package dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import model.Matiere;
@@ -47,7 +51,7 @@ public class MatiereDAO implements IDAO<Matiere> {
 	}
 
 	@Override
-	public Matiere getByID(int  id) throws SQLException {
+	public Matiere getByID(Object id) throws SQLException {
 		Matiere m = null;
 		String req = "SELECT * FROM Matiere WHERE id = ?";
 		Connection cx = SingletonConnection.getInstance();
@@ -89,7 +93,7 @@ public class MatiereDAO implements IDAO<Matiere> {
 		ps.setInt(1, (int) m.getID());
 		ps.executeUpdate();
 		ps.close();
-		
+
 
 		
 	}
