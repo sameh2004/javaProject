@@ -29,8 +29,21 @@ public class MatiereDAO implements IDAO<Matiere> {
 
 	@Override
 	public List<Matiere> getAll() throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		Connection cx = SingletonConnection.getInstance();
+		String req="SELECT * FROM Matiere";
+		PreparedStatement ps = cx.prepareStatement(req);
+		ResultSet rs = ps.executeQuery();
+		List<Matiere> matieres = new ArrayList<Matiere>();
+		while (rs.next()) {
+			Matiere m = new Matiere(rs.getInt("id"),
+					rs.getString("type"),
+					rs.getString("nom"));
+
+		matieres.add(m);
+		}
+		rs.close();
+		ps.close();
+		return matieres;
 	}
 
 	@Override
