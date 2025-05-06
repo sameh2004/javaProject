@@ -67,8 +67,17 @@ public class MatiereDAO implements IDAO<Matiere> {
 	}
 
 	@Override
-	public void update(Matiere object) throws SQLException {
-		// TODO Auto-generated method stub
+	public void update(Matiere m) throws SQLException {
+
+		Connection cx = SingletonConnection.getInstance();
+		String req = "UPDATE Matire SET type = ?, nom = ?,  WHERE id = ?";
+		PreparedStatement ps = cx.prepareStatement(req);
+		ps.setString(1, m.getType());
+
+		ps.setString(2, m.getNom());
+		ps.executeUpdate();
+		ps.close();
+
 		
 	}
 
