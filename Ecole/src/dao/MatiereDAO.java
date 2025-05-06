@@ -82,8 +82,15 @@ public class MatiereDAO implements IDAO<Matiere> {
 	}
 
 	@Override
-	public void delete(Matiere object) throws SQLException {
-		// TODO Auto-generated method stub
+	public void delete(Matiere m) throws SQLException {
+		Connection cx = SingletonConnection.getInstance();
+		String req = "DELETE FROM Matiere WHERE id = ?";
+		PreparedStatement ps = cx.prepareStatement(req);
+		ps.setInt(1, (int) m.getID());
+		ps.executeUpdate();
+		ps.close();
+		
+
 		
 	}
 
