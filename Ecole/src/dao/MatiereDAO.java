@@ -48,8 +48,22 @@ public class MatiereDAO implements IDAO<Matiere> {
 
 	@Override
 	public Matiere getByID(Object id) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		Matiere m = null;
+		String req = "SELECT * FROM Matiere WHERE id = ?";
+		Connection cx = SingletonConnection.getInstance();
+		PreparedStatement ps = cx.prepareStatement(req);
+		ps.setInt(1, (int) id);
+		ResultSet rs = ps.executeQuery();
+
+		if (rs.next()) {
+			m = new Matiere(	rs.getInt("id"),
+					rs.getString("type"),
+					rs.getString("nom"));
+		}
+
+		rs.close();
+		ps.close();
+		return m;
 	}
 
 	@Override
