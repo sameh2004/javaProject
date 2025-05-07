@@ -1,6 +1,12 @@
 package UI;
+import dao.UtilisateurDAO;
+import model.Utilisateur;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 public class Login  extends JFrame {
 
@@ -59,10 +65,41 @@ public class Login  extends JFrame {
 
 
             add(panel);
-
             setVisible(true);
-        }
 
+            loginButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    String id = idField.getText();
+                    String password = new String(passwordField.getPassword());
+
+                    UtilisateurDAO utilistaeur = new UtilisateurDAO();
+                    Utilisateur u = null;
+                    try {
+                        u = utilistaeur.SeConnecter(Integer.parseInt(id), password);
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+
+                    if (u != null) {
+                        dispose(); // Close login window
+                        switch (u.getRole()) {
+                            case "personnel":
+                                new AdminePage();
+                                break;
+                            case "enseignat":
+                                new EnseigPage();
+                                break;
+                            case "etudiant ":
+                                new StudentPage();
+                                break;
+
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Invalid ID or password", "Login Failed", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            });
+        }
 }
 
 
