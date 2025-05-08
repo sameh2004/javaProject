@@ -15,7 +15,9 @@ import java.sql.SQLException;
 import javax.swing.*;
 
 import dao.EtudiantDAO;
+import dao.UtilisateurDAO;
 import model.Etudiant;
+import model.Utilisateur;
 
 public class GestionEtudiantsFrame extends JFrame {
 
@@ -127,7 +129,13 @@ public class GestionEtudiantsFrame extends JFrame {
 
                 new EtudiantDAO().add(etu);
                 
-                
+                Utilisateur en=new Utilisateur();
+                en.setLog(Integer.parseInt(txtLogin.getText()));
+                en.setPass(txtPass.getText());
+                en.setNom(txtNom.getText());
+                en.setPrenom(txtPrenom.getText());
+                en.setRole("etudiant");
+                new UtilisateurDAO().add(en);
                 JOptionPane.showMessageDialog(panel, "Étudiant ajouté avec succès !");
                 
                 // Nettoyage des champs
@@ -185,18 +193,28 @@ public class GestionEtudiantsFrame extends JFrame {
                 int log = Integer.parseInt(txtLogin.getText());
                 EtudiantDAO dao = new EtudiantDAO();
                 Etudiant etu = dao.getByID(log);
-
+                UtilisateurDAO ud=new UtilisateurDAO();
+                Utilisateur u=ud.getByID(log);
                 if (etu == null) {
                     JOptionPane.showMessageDialog(panel, "Aucun étudiant trouvé avec ce login.", "Erreur", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
                 // Mettre à jour les informations
-                etu.setPass(txtPass.getText());
-                etu.setNom(txtNom.getText());
-                etu.setPrenom(txtPrenom.getText());
-                etu.setNiveau(Integer.parseInt(txtNiveau.getText()));
-                etu.setSpecialitéEtudiant(txtSpecialite.getText());
+                if (!txtPass.getText().isEmpty()) {
+                    etu.setPass(txtPass.getText());
+                    u.setPass(txtPass.getText());
+                }
+                if(!txtNom.getText().isEmpty()) {
+                	etu.setNom(txtNom.getText());
+                	u.setNom(txtNom.getText());}
+                if(!txtPrenom.getText().isEmpty()) {
+                	u.setPrenom(txtPrenom.getText());
+                	etu.setPrenom(txtPrenom.getText());}
+                if(!txtNiveau.getText().isEmpty())
+                	etu.setNiveau(Integer.parseInt(txtNiveau.getText()));
+                if(!txtSpecialite.getText().isEmpty())
+                	etu.setSpecialitéEtudiant(txtSpecialite.getText());
 
                 dao.update(etu);
                 JOptionPane.showMessageDialog(panel, "Étudiant modifié avec succès !");
@@ -241,9 +259,11 @@ public class GestionEtudiantsFrame extends JFrame {
                 int id = Integer.parseInt(idText);
                 EtudiantDAO etudiantDAO = new EtudiantDAO();
                 Etudiant etudiant = etudiantDAO.getByID(id);
-
+                UtilisateurDAO ud=new UtilisateurDAO();
+                Utilisateur u=ud.getByID(id);
                 if (etudiant != null) {
                     etudiantDAO.delete(etudiant);
+                    ud.delete(u);
                     JOptionPane.showMessageDialog(panel, "Étudiant supprimé avec succès.");
                 } else {
                     JOptionPane.showMessageDialog(panel, "Aucun étudiant trouvé avec cet ID.");
