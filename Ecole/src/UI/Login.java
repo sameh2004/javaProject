@@ -1,12 +1,13 @@
 package UI;
+import javax.swing.*;
+
 import dao.UtilisateurDAO;
 import model.Utilisateur;
+import vue.AdminInterface;
+import vue.EnseignantInterface;
+import vue.EtudiantInterface;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.SQLException;
 
 public class Login  extends JFrame {
 
@@ -65,42 +66,49 @@ public class Login  extends JFrame {
 
 
             add(panel);
+            loginButton.addActionListener(e -> {
+	            try {
+	                int log = Integer.parseInt(idField.getText());
+	                String pass = new String(passwordField.getPassword());
+
+	                UtilisateurDAO dao = new UtilisateurDAO();
+	                Utilisateur u = dao.SeConnecter(log, pass);
+
+	                if (u != null) {
+	                   // JOptionPane.showMessageDialog(this, "Bienvenue " + u.getPrenom() + " (" + u.getRole() + ")");
+	                    
+	                    switch (u.getRole().toLowerCase()) {
+	                    case "admin":
+	                        new AdminePage();
+	                        break;
+	                    case "enseignant":
+	                        new EnseigPage();
+	                        break;
+	                    case "etudiant":{
+	                    	 StudentPage s=new StudentPage();
+	                		 s.showPage();}
+	                        break;
+	                }
+
+	                    
+
+	                    dispose(); // Ferme la fenêtre actuelle
+	                } else {
+	                    JOptionPane.showMessageDialog(this, "Identifiants incorrects.");
+	                }
+
+	            } catch (NumberFormatException ex) {
+	                JOptionPane.showMessageDialog(this, "Le login doit être un identifiant numérique.");
+	            } catch (Exception ex) {
+	                ex.printStackTrace();
+	                JOptionPane.showMessageDialog(this, "Erreur de connexion.");
+	            }
+	        });
+
+
             setVisible(true);
-
-            loginButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    String id = idField.getText();
-                    String password = new String(passwordField.getPassword());
-
-                    UtilisateurDAO utilistaeur = new UtilisateurDAO();
-                    Utilisateur u = null;
-                    try {
-                        u = utilistaeur.SeConnecter(Integer.parseInt(id), password);
-                    } catch (SQLException ex) {
-                        throw new RuntimeException(ex);
-                    }
-
-                    if (u != null) {
-                        dispose(); // Close login window
-                        switch (u.getRole()) {
-                            case "personnel":
-                                new AdminePage();
-                                break;
-                            case "enseignat":
-                                new EnseigPage();
-                                break;
-                            case "etudiant ":{
-                                 new StudentPage();
-		                  
-                                break;
-
-                        }
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Invalid ID or password", "Login Failed", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-            });
         }
+
 }
 
 

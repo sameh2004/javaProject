@@ -85,11 +85,11 @@ import model.Etudiant;
 		        String req = "UPDATE etudiant SET pass = ?, nom = ?, prenom = ?, niveau = ?, specialité = ? WHERE log = ?";
 		        PreparedStatement ps = cx.prepareStatement(req);
 		        ps.setString(1, e.getPass());
-		        ps.setString(3, e.getNom());
-		        ps.setString(4, e.getPrenom());
-		        ps.setInt(5, e.getNiveau());
-		        ps.setString(6, e.getSpecialitéEtudiant());
-		        ps.setInt(7, e.getLog());
+		        ps.setString(2, e.getNom());
+		        ps.setString(3, e.getPrenom());
+		        ps.setInt(4, e.getNiveau());
+		        ps.setString(5, e.getSpecialitéEtudiant());
+		        ps.setInt(6, e.getLog());
 		        ps.executeUpdate();
 		        ps.close();
 		    }

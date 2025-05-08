@@ -21,7 +21,6 @@ package dao;
 	        PreparedStatement ps = cx.prepareStatement(req);
 	        ps.setInt(1, p.getLog());
 	        ps.setString(2, p.getPass());
-	        
 	        ps.setString(3, p.getNom());
 	        ps.setString(4, p.getPrenom());
 	        ps.setString(5, p.getPoste());

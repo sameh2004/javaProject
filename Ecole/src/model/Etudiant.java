@@ -19,10 +19,10 @@ public class Etudiant extends Utilisateur {
 	public void setNiveau(int niveau) {
 		this.niveau = niveau;
 	}
-	public String getSpecialiteEtudiant() {
+	public String getSpecialitéEtudiant() {
 		return specialitéEtudiant;
 	}
-	public void setSpecialiteEtudiant(String specialitéEtudiant) {
+	public void setSpecialitéEtudiant(String specialitéEtudiant) {
 		this.specialitéEtudiant = specialitéEtudiant;
 	}
 	@Override

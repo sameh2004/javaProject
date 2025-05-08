@@ -4,11 +4,12 @@ public class Matiere {
 	private int ID;
 	private String type;
 	private String nom;
-	public Matiere(int id,String type,String nom) {
+	public Matiere(int id,String nom,String type) {
 		this.ID=id;
 		this.nom=nom;
 		this.type=type;
 	}
+	public Matiere() {}
 	public int getID() {
 		return ID;
 	}
