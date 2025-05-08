@@ -17,11 +17,12 @@ public class EnseignantDAO implements IDAO<Enseignant> {
         String req = "INSERT INTO enseignant (log,  nom, prenom,  specialité, pass) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement ps = cx.prepareStatement(req);
         ps.setInt(1, e.getLog());
-        ps.setString(2, e.getPass());
         
-        ps.setString(3, e.getNom());
-        ps.setString(4, e.getPrenom());
-        ps.setString(5, e.getSpecialitéEnseign());
+        
+        ps.setString(2, e.getNom());
+        ps.setString(3, e.getPrenom());
+        ps.setString(4, e.getSpecialitéEnseign());
+        ps.setString(5, e.getPass());
         ps.executeUpdate();
         ps.close();
     }
