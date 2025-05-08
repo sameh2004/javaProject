@@ -24,7 +24,7 @@ public class Login  extends JFrame {
             panel.setLayout(null);
             panel.setBackground(Color.WHITE);
             panel.setBounds(560, 200, 800, 400); // You might adjust x=560 for centering on other screens
-            panel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2));
+            panel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
 
             // Title
             JLabel title = new JLabel("Login");
@@ -59,7 +59,7 @@ public class Login  extends JFrame {
             JButton loginButton = new JButton("Login");
             loginButton.setFont(new Font("Arial", Font.BOLD, 24));
             loginButton.setBounds(320, 280, 300, 45);
-            loginButton.setBackground(new Color(0, 12, 56));
+            loginButton.setBackground(new Color(5, 51, 71));
             loginButton.setForeground(Color.WHITE);
             panel.add(loginButton);
 
