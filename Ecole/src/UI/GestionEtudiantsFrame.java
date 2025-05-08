@@ -35,7 +35,7 @@ public class GestionEtudiantsFrame extends JFrame {
         // Sidebar Panel
         JPanel sidebar = new JPanel();
         sidebar.setPreferredSize(new Dimension(400, 0));
-        sidebar.setBackground(new Color(0, 12, 56));
+        sidebar.setBackground(new Color(58, 146, 165));
         sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
 
         String[] buttons = {"Ajouter", "Modifier", "Supprimer","Fermer"};
@@ -45,7 +45,7 @@ public class GestionEtudiantsFrame extends JFrame {
             btn.setMaximumSize(new Dimension(280, 60));
             btn.setFocusPainted(false);
             btn.setForeground(Color.WHITE);
-            btn.setBackground(new Color(63, 72, 135));
+            btn.setBackground(new Color(5, 51, 71));
             btn.setBorderPainted(false);
             btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
@@ -70,6 +70,7 @@ public class GestionEtudiantsFrame extends JFrame {
         cardPanel.add(buildAjouterPanel(), "Ajouter");
         cardPanel.add(buildModifierPanel(), "Modifier");
         cardPanel.add(buildSupprimerPanel(), "Supprimer");
+        cardPanel.add(buildSupprimerPanel(), "Fermer");
        
 
         contentPane.add(cardPanel, BorderLayout.CENTER);

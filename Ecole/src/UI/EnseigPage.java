@@ -20,7 +20,7 @@ public class EnseigPage  extends JFrame {
 
         // LEFT: Sidebar panel
         JPanel leftPanel = new JPanel();
-        leftPanel.setBackground(new Color(33, 37, 64)); // Dark Blue
+        leftPanel.setBackground(new Color(58, 146, 165)); // Dark Blue
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 
         JLabel title = new JLabel("Page d'Enseignent");
@@ -59,10 +59,10 @@ public class EnseigPage  extends JFrame {
 
     private JButton createSidebarButton(String text) {
         JButton button = new JButton(text);
-        button.setMaximumSize(new Dimension(240, 50));
+        button.setMaximumSize(new Dimension(300, 70));
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.setFont(new Font("Arial", Font.PLAIN, 16));
-        button.setBackground(new Color(52, 58, 82));
+        button.setBackground(new Color(5, 51, 71));
         button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
         button.setBorderPainted(false);
