@@ -100,35 +100,31 @@ public class UtilisateurDAO implements IDAO<Utilisateur>{
 
 	  
 	}
-	public Utilisateur SeConnecter(int log, String pass) {
+	public Utilisateur SeConnecter(int log, String pass) throws SQLException {
 	    Utilisateur u = null;
 	    String req = "SELECT * FROM utilisateur WHERE log = ? AND pass = ?";
 
-	    try {
-	        Connection cx = SingletonConnection.getInstance();
-	        PreparedStatement ps = cx.prepareStatement(req);
-	        ps.setInt(1, log);
-	        ps.setString(2, pass);
+        Connection cx = SingletonConnection.getInstance();
+        PreparedStatement ps = cx.prepareStatement(req);
+        ps.setInt(1, log);
+        ps.setString(2, pass);
 
-	        ResultSet rs = ps.executeQuery();
+        ResultSet rs = ps.executeQuery();
 
-	        if (rs.next()) {
-	            u = new Utilisateur();
-	            u.setLog(rs.getInt("log"));
-	            u.setPass(rs.getString("pass"));
-	            u.setRole(rs.getString("user_role"));
-	            u.setNom(rs.getString("nom"));
-	            u.setPrenom(rs.getString("prenom"));
-	        }
+        if (rs.next()) {
+            u = new Utilisateur();
+            u.setLog(rs.getInt("log"));
+            u.setPass(rs.getString("pass"));
+            u.setRole(rs.getString("user_role"));
+            u.setNom(rs.getString("nom"));
+            u.setPrenom(rs.getString("prenom"));
+        }
 
-	        rs.close();
-	        ps.close();
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
+        rs.close();
+        ps.close();
 
-	    return u; // null si non trouvé
+        return u; // null si non trouvé
 	}
 
+	}
 
-}

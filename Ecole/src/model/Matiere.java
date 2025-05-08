@@ -9,6 +9,10 @@ public class Matiere {
 		this.nom=nom;
 		this.type=type;
 	}
+
+	public Matiere(int id) {
+	}
+
 	public int getID() {
 		return ID;
 	}

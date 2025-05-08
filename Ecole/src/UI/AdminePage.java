@@ -1,7 +1,13 @@
 package UI;
+import dao.MatiereDAO;
+import dao.UtilisateurDAO;
+import model.Matiere;
+import model.Utilisateur;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+
+import java.sql.SQLException;
 
 public class AdminePage extends JFrame {
 
@@ -21,7 +27,7 @@ public class AdminePage extends JFrame {
         // Sidebar Panel
         JPanel sidebar = new JPanel();
         sidebar.setPreferredSize(new Dimension(400, 0));
-        sidebar.setBackground(new Color(0, 12, 56));
+        sidebar.setBackground(new Color(58, 146, 165));
         sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
 
         String[] buttons = {"Ajouter", "Modifier", "Supprimer", "Affectation"};
@@ -31,7 +37,7 @@ public class AdminePage extends JFrame {
             btn.setMaximumSize(new Dimension(280, 60));
             btn.setFocusPainted(false);
             btn.setForeground(Color.WHITE);
-            btn.setBackground(new Color(63, 72, 135));
+            btn.setBackground(new Color(5, 51, 71));
             btn.setBorderPainted(false);
             btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
@@ -85,6 +91,37 @@ public class AdminePage extends JFrame {
         gbc.gridy = labels.length;
         panel.add(btnSave, gbc);
 
+        btnSave.addActionListener(e -> {
+            try {
+                int log = Integer.parseInt(fields[0].getText());
+                String pass = fields[1].getText();
+                String nom = fields[2].getText();
+                String prenom = fields[3].getText();
+                String role = fields[4].getText();
+
+                Utilisateur utilisateur = new Utilisateur();
+                utilisateur.setLog(log);
+                utilisateur.setPass(pass);
+                utilisateur.setNom(nom);
+                utilisateur.setPrenom(prenom);
+                utilisateur.setRole(role);
+
+                new UtilisateurDAO().add(utilisateur);
+
+                JOptionPane.showMessageDialog(panel, "Utilisateur ajouté !");
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(panel,
+                        "Le login doit être un nombre.",
+                        "Erreur",
+                        JOptionPane.ERROR_MESSAGE);
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(panel,
+                        "Erreur SQL : " + ex.getMessage(),
+                        "Erreur",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
         return panel;
     }
 
@@ -115,7 +152,51 @@ public class AdminePage extends JFrame {
         gbc.gridx = 1; gbc.gridy = 2;
         panel.add(btnDelete, gbc);
 
+        btnDelete.addActionListener(e -> {
+            String idText = txtId.getText();
+            String selectedType = (String) comboType.getSelectedItem();
+
+            if (idText.isEmpty()) {
+                JOptionPane.showMessageDialog(panel,
+                        "Veuillez entrer un ID.",
+                        "Erreur",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            try {
+                int id = Integer.parseInt(idText);
+
+                // Suppression selon le type
+                UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
+
+                if ("Matière".equals(selectedType)) {
+                    // Supprime depuis la table matière
+                    MatiereDAO matiereDAO = new MatiereDAO();
+                    matiereDAO.delete(new Matiere(id)); // ou matiereDAO.deleteById(id)
+                    JOptionPane.showMessageDialog(panel, "Matière supprimée.");
+                } else {
+                    // Supprime l'utilisateur (étudiant ou enseignant) depuis la table utilisateur
+                    utilisateurDAO.delete(new Utilisateur(id)); // ou utilisateurDAO.deleteById(id)
+                    JOptionPane.showMessageDialog(panel,
+                            (selectedType.equals("Étudiant") ? "Étudiant" : "Enseignant") + " supprimé.");
+                }
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(panel,
+                        "L'ID doit être un nombre entier.",
+                        "Erreur",
+                        JOptionPane.ERROR_MESSAGE);
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(panel,
+                        "Erreur lors de la suppression : " + ex.getMessage(),
+                        "Erreur SQL",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
         return panel;
+
     }
 
     public JPanel buildAffectationPanel() {
@@ -157,6 +238,8 @@ public class AdminePage extends JFrame {
 
         return panel;
     }
+
+
 
 
 }
