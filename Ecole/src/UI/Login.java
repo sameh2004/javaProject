@@ -89,8 +89,9 @@ public class Login  extends JFrame {
                             case "enseignat":
                                 new EnseigPage();
                                 break;
-                            case "etudiant ":
-                                new StudentPage();
+                            case "etudiant ":{
+                                 new StudentPage();
+		                  
                                 break;
 
                         }
