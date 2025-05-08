@@ -14,7 +14,7 @@ public class EnseignantDAO implements IDAO<Enseignant> {
     @Override
     public void add(Enseignant e) throws SQLException {
         Connection cx = SingletonConnection.getInstance();
-        String req = "INSERT INTO enseignant (log, pass,  nom, prenom,  specialité) VALUES (?, ?, ?, ?, ?)";
+        String req = "INSERT INTO enseignant (log,  nom, prenom,  specialité, pass) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement ps = cx.prepareStatement(req);
         ps.setInt(1, e.getLog());
         ps.setString(2, e.getPass());
@@ -76,13 +76,14 @@ public class EnseignantDAO implements IDAO<Enseignant> {
     @Override
     public void update(Enseignant e) throws SQLException {
         Connection cx = SingletonConnection.getInstance();
-        String req = "UPDATE enseignant SET pass = ?, nom = ?, prenom = ?, specialité = ? WHERE log = ?";
+        String req = "UPDATE enseignant SET  nom = ?, prenom = ?, specialité = ? ,pass = ? WHERE log = ?";
         PreparedStatement ps = cx.prepareStatement(req);
-        ps.setString(1, e.getPass());
         
-        ps.setString(2, e.getNom());
-        ps.setString(3, e.getPrenom());
-        ps.setString(4, e.getSpecialitéEnseign());
+        
+        ps.setString(1, e.getNom());
+        ps.setString(2, e.getPrenom());
+        ps.setString(3, e.getSpecialitéEnseign());
+        ps.setString(4, e.getPass());
         ps.setInt(5, e.getLog());
         ps.executeUpdate();
         ps.close();
