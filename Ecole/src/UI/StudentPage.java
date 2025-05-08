@@ -24,7 +24,7 @@ public class StudentPage extends JFrame {
 
         // Menu à gauche
         JPanel panelMenu = new JPanel();
-        panelMenu.setBackground(new Color(58, 146, 165));
+        panelMenu.setBackground(new Color(30, 30, 60));
         panelMenu.setPreferredSize(new Dimension(400, getHeight()));
         panelMenu.setLayout(new BoxLayout(panelMenu, BoxLayout.Y_AXIS));
 
@@ -48,7 +48,7 @@ public class StudentPage extends JFrame {
 
         // Zone de contenu
         panelContenu = new JPanel(new BorderLayout());
-        panelContenu.setBackground(Color.WHITE);
+        panelContenu.setBackground(Color.LIGHT_GRAY);
         JLabel labelDefaut = new JLabel("Contenu affiché ici", JLabel.CENTER);
         labelDefaut.setFont(new Font("SansSerif", Font.PLAIN, 18));
         panelContenu.add(labelDefaut, BorderLayout.CENTER);
@@ -68,7 +68,7 @@ public class StudentPage extends JFrame {
         button.setMaximumSize(new Dimension(240, 50));
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.setFont(new Font("Arial", Font.PLAIN, 16));
-        button.setBackground(new Color(5, 51, 71));
+        button.setBackground(new Color(52, 58, 82));
         button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
         button.setBorderPainted(false);
@@ -167,7 +167,7 @@ public class StudentPage extends JFrame {
         for (Enseignant e : liste) {
             listModel.addElement(e.getNom() + " " + e.getPrenom());
         }
-
+        
         JList<String> listeNoms = new JList<>(listModel);
         listeNoms.setFont(new Font("SansSerif", Font.PLAIN, 16));
         JScrollPane scrollListe = new JScrollPane(listeNoms);
@@ -188,7 +188,7 @@ public class StudentPage extends JFrame {
                     panelDetails.add(new JLabel("Nom : " + selected.getNom()));
                     panelDetails.add(new JLabel("Prénom : " + selected.getPrenom()));
                     panelDetails.add(new JLabel("Spécialité : " + selected.getSpecialitéEnseign()));
-
+                    
                     panelDetails.revalidate();
                     panelDetails.repaint();
                 }

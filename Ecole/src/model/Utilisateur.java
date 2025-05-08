@@ -16,10 +16,6 @@ public class Utilisateur {
 	public Utilisateur() {
 		
 	}
-
-	public Utilisateur(int id) {
-	}
-
 	public int getLog() {
 		return log;
 	}

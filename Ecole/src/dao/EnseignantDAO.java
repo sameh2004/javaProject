@@ -50,7 +50,6 @@ public class EnseignantDAO implements IDAO<Enseignant> {
         return enseignants;
     }
 
-    @Override
     public Enseignant getByID(Object log) throws SQLException {
         Enseignant e = null;
         String req = "SELECT * FROM enseignant WHERE log = ?";
@@ -77,7 +76,7 @@ public class EnseignantDAO implements IDAO<Enseignant> {
     @Override
     public void update(Enseignant e) throws SQLException {
         Connection cx = SingletonConnection.getInstance();
-        String req = "UPDATE enseignant SET pass = ?, nom = ?, prenom = ?, niveau = ?, specialité = ? WHERE log = ?";
+        String req = "UPDATE enseignant SET pass = ?, nom = ?, prenom = ?, specialité = ? WHERE log = ?";
         PreparedStatement ps = cx.prepareStatement(req);
         ps.setString(1, e.getPass());
         
