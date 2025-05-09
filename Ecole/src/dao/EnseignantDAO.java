@@ -12,7 +12,7 @@ import model.Enseignant;
 public class EnseignantDAO implements IDAO<Enseignant> {
 
     @Override
-    public void add(Enseignant e) throws SQLException {
+    public boolean add(Enseignant e) throws SQLException {
         Connection cx = SingletonConnection.getInstance();
         String req = "INSERT INTO enseignant (log,  nom, prenom,  specialité, pass) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement ps = cx.prepareStatement(req);
@@ -25,6 +25,7 @@ public class EnseignantDAO implements IDAO<Enseignant> {
         ps.setString(5, e.getPass());
         ps.executeUpdate();
         ps.close();
+        return false;
     }
 
     @Override

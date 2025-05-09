@@ -15,7 +15,7 @@ package dao;
 	public class PersonnelDAO implements IDAO<Personnel> {
 
 	    @Override
-	    public void add(Personnel p) throws SQLException {
+	    public boolean add(Personnel p) throws SQLException {
 	        Connection cx = SingletonConnection.getInstance();
 	        String req = "INSERT INTO personnel (log, pass,  nom, prenom,  poste) VALUES ( ?, ?, ?, ?, ?)";
 	        PreparedStatement ps = cx.prepareStatement(req);
@@ -26,7 +26,8 @@ package dao;
 	        ps.setString(5, p.getPoste());
 	        ps.executeUpdate();
 	        ps.close();
-	    }
+            return false;
+        }
 
 	    @Override
 	    public List<Personnel> getAll() throws SQLException {

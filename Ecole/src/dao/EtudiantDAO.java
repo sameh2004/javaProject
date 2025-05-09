@@ -17,7 +17,7 @@ import model.Etudiant;
 
 
 		@Override
-		public void add(Etudiant E) throws SQLException {
+		public boolean add(Etudiant E) throws SQLException {
 			Connection cx=SingletonConnection.getInstance();
 			String req = "insert into etudiant (log,pass,nom,prenom,niveau,specialité) values(?,?,?,?,?,?)";
 			PreparedStatement ps;
@@ -30,6 +30,7 @@ import model.Etudiant;
 			ps.setString(6,E.getSpecialitéEtudiant());
 			ps.executeUpdate();
 			ps.close();
+			return false;
 		}
 
 		@Override

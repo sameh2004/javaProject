@@ -14,7 +14,7 @@ import model.Utilisateur;
 public class UtilisateurDAO implements IDAO<Utilisateur>{
 
 	@Override
-	public void add(Utilisateur C) throws SQLException {
+	public boolean add(Utilisateur C) throws SQLException {
 		Connection cx=SingletonConnection.getInstance();
 		String req = "insert into utilisateur (log,pass,user_role,nom,prenom) values(?,?,?,?,?)";
 		PreparedStatement ps;
@@ -26,7 +26,8 @@ public class UtilisateurDAO implements IDAO<Utilisateur>{
 		ps.setString(5,C.getPrenom());
 		ps.executeUpdate();
 		ps.close();
-	}
+        return false;
+    }
 
 	@Override
 	public List<Utilisateur> getAll() throws SQLException {

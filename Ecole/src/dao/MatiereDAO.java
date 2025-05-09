@@ -7,13 +7,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Etudiant;
 import model.Matiere;
 
 public class MatiereDAO implements IDAO<Matiere> {
 
 	@Override
-	public void add(Matiere M) throws SQLException {
+	public boolean add(Matiere M) throws SQLException {
 		Connection cx=SingletonConnection.getInstance();
 		String req = "insert into matiere (id,nom,type) values(?,?,?)";
 		PreparedStatement ps;
@@ -24,7 +23,8 @@ public class MatiereDAO implements IDAO<Matiere> {
 		
 		ps.executeUpdate();
 		ps.close();
-	}
+        return false;
+    }
 
 	@Override
 	public List<Matiere> getAll() throws SQLException {

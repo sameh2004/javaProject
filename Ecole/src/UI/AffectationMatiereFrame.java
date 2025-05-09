@@ -3,9 +3,10 @@ package UI;
 import dao.MatiereDAO;
 import dao.UtilisateurDAO;
 
+import model.Affectation;
 import model.Matiere;
 import model.Utilisateur;
-
+import dao.AffectationDAO;
 import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
@@ -32,7 +33,7 @@ public class AffectationMatiereFrame extends JFrame {
             sidebar.setBackground(new Color(58, 146, 165));
             sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
 
-            String[] buttons = {"Ajouter", "Modifier", "Supprimer","Fermer"};
+            String[] buttons = {"Ajouter", "Affectation", "Supprimer","Fermer"};
             for (String btnText : buttons) {
                 JButton btn = new JButton(btnText);
                 btn.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -68,7 +69,7 @@ public class AffectationMatiereFrame extends JFrame {
 
 
             cardPanel.add(buildAjouterPanel(), "Ajouter");
-            cardPanel.add(buildAffectationPanel(), "Affectation ");
+            cardPanel.add(buildAffectationPanel(), "Affectation");
             cardPanel.add(buildSupprimerPanel(), "Supprimer");
 
 
@@ -208,46 +209,69 @@ public class AffectationMatiereFrame extends JFrame {
         JTextField txtEnseignantId = new JTextField(40);
         JTextField txtHeures = new JTextField(40);
 
-        JTextField[] fields = { txtMatiereId, txtEnseignantId, txtHeures };
+        JTextField[] fields = {txtMatiereId, txtEnseignantId, txtHeures};
         // Ajout des labels et champs au panel
+        JButton btnSave = null;
         for (int i = 0; i < labels.length; i++) {
             gbc.gridx = 0;
             gbc.gridy = i;
             panel.add(labels[i], gbc);
 
             gbc.gridx = 1;
-            panel.add(fields[i], gbc);
-        }
+            panel.add(fields[i], gbc);}
 
-        // Bouton Enregistrer
-        JButton btnSave = new JButton("Enregistrer");
-        gbc.gridx = 1;
-        gbc.gridy = labels.length;
-        panel.add(btnSave, gbc);
+
+            // Bouton Enregistrer
+            btnSave = new JButton("Enregistrer");
+            gbc.gridx = 1;
+            gbc.gridy = labels.length;
+            panel.add(btnSave, gbc);
+
+
         btnSave.addActionListener(e -> {
             String matiereIdText = txtMatiereId.getText();
             String enseignantIdText = txtEnseignantId.getText();
             String heuresText = txtHeures.getText();
 
             try {
+                if (matiereIdText.isEmpty() || enseignantIdText.isEmpty() || heuresText.isEmpty()) {
+                    JOptionPane.showMessageDialog(panel, "Tous les champs sont obligatoires.", "Erreur de saisie", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
                 int matiereId = Integer.parseInt(matiereIdText);
                 int enseignantId = Integer.parseInt(enseignantIdText);
                 int heures = Integer.parseInt(heuresText);
 
                 Affectation affectation = new Affectation(matiereId, enseignantId, heures);
-                if (AffectationDAO.ajouter(affectation)) {
+                // Assurez-vous que AffectationDAO.add() retourne un boolean pertinent ou gère les exceptions
+                if (new AffectationDAO().add(affectation)) {
                     JOptionPane.showMessageDialog(panel, "Affectation ajoutée avec succès !");
+                    for (JTextField field : fields) {
+                        field.setText(""); // Nettoyer les champs
+                    }
                 } else {
-                    JOptionPane.showMessageDialog(panel, "Échec de l'ajout.", "Erreur", JOptionPane.ERROR_MESSAGE);
+                    // Ce message peut être redondant si add() lance une SQLException gérée ci-dessous
+                    JOptionPane.showMessageDialog(panel, "Échec de l'ajout de l'affectation (vérifiez les logs ou la base de données).", "Erreur d'ajout", JOptionPane.ERROR_MESSAGE);
                 }
-
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(panel, "Veuillez entrer des valeurs numériques valides.", "Erreur", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(panel, "Veuillez entrer des valeurs numériques valides pour les IDs et le nombre d'heures.", "Erreur de Format", JOptionPane.ERROR_MESSAGE);
+            } catch (SQLException ex) { // MODIFIÉ: Gestion de SQLException
+                JOptionPane.showMessageDialog(panel, "Erreur SQL lors de l'ajout de l'affectation : " + ex.getMessage(), "Erreur SQL", JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace(); // Important pour le débogage
+            } catch (Exception ex) { // Catch générique pour autres erreurs
+                JOptionPane.showMessageDialog(panel, "Une erreur inattendue est survenue : " + ex.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace();
             }
-        });}
+        });
+        return panel;
+    }
 
 
 }
+
+
+
 
 
 
