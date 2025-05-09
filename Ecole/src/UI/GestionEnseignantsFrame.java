@@ -55,7 +55,13 @@ public class GestionEnseignantsFrame extends JFrame {
 	            sidebar.add(btn);
 
 	            if (btnText.equals("Fermer")) {
-	                btn.addActionListener(e -> frame.dispose());
+					btn.addActionListener(e -> {
+						// 1. Ouvrir la page Admin
+						new AdminePage().setVisible(true);
+
+						// 2. Fermer la fenêtre actuelle
+						((JFrame) SwingUtilities.getWindowAncestor(btn)).dispose();
+					});
 	            } else {
 	                btn.addActionListener(e -> cardLayout.show(cardPanel, btnText));
 	            }

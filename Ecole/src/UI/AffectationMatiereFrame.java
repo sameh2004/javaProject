@@ -1,9 +1,10 @@
 package UI;
 
-import dao.EtudiantDAO;
 import dao.MatiereDAO;
-import model.Etudiant;
+import dao.UtilisateurDAO;
+
 import model.Matiere;
+import model.Utilisateur;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,7 +47,13 @@ public class AffectationMatiereFrame extends JFrame {
                 sidebar.add(btn);
 
                 if (btnText.equals("Fermer")) {
-                    btn.addActionListener(e -> frame.dispose());
+                    btn.addActionListener(e -> {
+                        // 1. Ouvrir la page Admin
+                        new AdminePage().setVisible(true);
+
+                        // 2. Fermer la fenêtre actuelle
+                        ((JFrame) SwingUtilities.getWindowAncestor(btn)).dispose();
+                    });
                 } else {
                     btn.addActionListener(e -> cardLayout.show(cardPanel, btnText));
                 }
@@ -55,15 +62,15 @@ public class AffectationMatiereFrame extends JFrame {
 
             contentPane.add(sidebar, BorderLayout.WEST);
 
-            // Card Panel
+
             cardLayout = new CardLayout();
             cardPanel = new JPanel(cardLayout);
 
-            // Use the same names as the button texts
+
             cardPanel.add(buildAjouterPanel(), "Ajouter");
-            cardPanel.add(buildModifierPanel(), "Modifier");
+            cardPanel.add(buildAffectationPanel(), "Affectation ");
             cardPanel.add(buildSupprimerPanel(), "Supprimer");
-            cardPanel.add(buildSupprimerPanel(), "Fermer");
+
 
 
             contentPane.add(cardPanel, BorderLayout.CENTER);
@@ -132,67 +139,115 @@ public class AffectationMatiereFrame extends JFrame {
         });
 
         return panel;}
-    public JPanel buildModifierPanel() {
 
+        public JPanel buildSupprimerPanel() {
             JPanel panel = new JPanel(new GridBagLayout());
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.insets = new Insets(5, 5, 5, 5);
-            gbc.fill = GridBagConstraints.HORIZONTAL;
 
-            JLabel[] labels = {
-                    new JLabel("Login à modifier :"), new JLabel("Nouveau mot de passe :"),
-                    new JLabel("Nouveau nom :"), new JLabel("Nouveau prénom :"),
-                    new JLabel("Nouveau niveau :"), new JLabel("Nouvelle spécialité :")
-            };
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            panel.add(new JLabel("ID à supprimer:"), gbc);
 
-            JTextField txtId = new JTextField(40);
-            JTextField txtType = new JTextField(40);
-            JTextField txtNom = new JTextField(40);
-
-
-            JTextField[] fields = {txtId, txtType, txtNom };
-
-            for (int i = 0; i < labels.length; i++) {
-                gbc.gridx = 0;
-                gbc.gridy = i;
-                panel.add(labels[i], gbc);
-                gbc.gridx = 1;
-                panel.add(fields[i], gbc);
-            }
-
-            JButton btnModifier = new JButton("Modifier");
             gbc.gridx = 1;
-            gbc.gridy = labels.length;
-            panel.add(btnModifier, gbc);
+            JTextField txtId = new JTextField(20);
+            panel.add(txtId, gbc);
 
-            btnModifier.addActionListener(e -> {
+            JButton btnDelete = new JButton("Supprimer");
+            gbc.gridx = 1;
+            gbc.gridy = 1;
+            panel.add(btnDelete, gbc);
+
+            btnDelete.addActionListener(e -> {
+                String idText = txtId.getText();
+
+                if (idText.isEmpty()) {
+                    JOptionPane.showMessageDialog(panel, "Veuillez entrer un ID.", "Erreur", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
                 try {
-                    int ID = Integer.parseInt(txtId.getText());
-                   MatiereDAO dao = new MatiereDAO();
-                   Matiere matiere= dao.getByID(ID);
-
-                    if (matiere  == null) {
-                        JOptionPane.showMessageDialog(panel, "Aucun Matiere trouvé avec ce ID.", "Erreur", JOptionPane.ERROR_MESSAGE);
-                        return;
+                    int id = Integer.parseInt(idText);
+                    MatiereDAO matiereDAO = new MatiereDAO();
+                  Matiere matiere  = matiereDAO.getByID(id);
+                    UtilisateurDAO ud=new UtilisateurDAO();
+                    Utilisateur u=ud.getByID(id);
+                    if (matiere != null) {
+                        matiereDAO.delete(matiere);
+                        ud.delete(u);
+                        JOptionPane.showMessageDialog(panel, "Matiere  supprimé avec succès.");
+                    } else {
+                        JOptionPane.showMessageDialog(panel, "Aucune Matiere  trouvé avec cet ID.");
                     }
 
-                    // Mettre à jour les informations
-                    matiere.setID(Integer.parseInt(txtId.getText()));
-                    matiere.setNom(txtNom.getText());
-                    matiere.setType(txtType.getText());
-
-                    dao.update(matiere);
-                    JOptionPane.showMessageDialog(panel, "Matiere  modifié avec succès !");
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(panel, "ID doit être des entiers.", "Erreur", JOptionPane.ERROR_MESSAGE);
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(panel, "Erreur SQL : " + ex.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(panel, "ID invalide (doit être un nombre).", "Erreur", JOptionPane.ERROR_MESSAGE);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(panel, "Erreur lors de la suppression : " + ex.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
                 }
             });
 
             return panel;
         }
 
+    public JPanel buildAffectationPanel() {
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        // Labels pour les champs
+        JLabel[] labels = {
+                new JLabel("ID Matière:"),
+                new JLabel("ID Enseignant:"),
+                new JLabel("Nombre d'heures:")
+        };
+
+        // Champs de saisie
+        JTextField txtMatiereId = new JTextField(40);
+        JTextField txtEnseignantId = new JTextField(40);
+        JTextField txtHeures = new JTextField(40);
+
+        JTextField[] fields = { txtMatiereId, txtEnseignantId, txtHeures };
+        // Ajout des labels et champs au panel
+        for (int i = 0; i < labels.length; i++) {
+            gbc.gridx = 0;
+            gbc.gridy = i;
+            panel.add(labels[i], gbc);
+
+            gbc.gridx = 1;
+            panel.add(fields[i], gbc);
+        }
+
+        // Bouton Enregistrer
+        JButton btnSave = new JButton("Enregistrer");
+        gbc.gridx = 1;
+        gbc.gridy = labels.length;
+        panel.add(btnSave, gbc);
+        btnSave.addActionListener(e -> {
+            String matiereIdText = txtMatiereId.getText();
+            String enseignantIdText = txtEnseignantId.getText();
+            String heuresText = txtHeures.getText();
+
+            try {
+                int matiereId = Integer.parseInt(matiereIdText);
+                int enseignantId = Integer.parseInt(enseignantIdText);
+                int heures = Integer.parseInt(heuresText);
+
+                Affectation affectation = new Affectation(matiereId, enseignantId, heures);
+                if (AffectationDAO.ajouter(affectation)) {
+                    JOptionPane.showMessageDialog(panel, "Affectation ajoutée avec succès !");
+                } else {
+                    JOptionPane.showMessageDialog(panel, "Échec de l'ajout.", "Erreur", JOptionPane.ERROR_MESSAGE);
+                }
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(panel, "Veuillez entrer des valeurs numériques valides.", "Erreur", JOptionPane.ERROR_MESSAGE);
+            }
+        });}
+
+
+}
 
 
 
@@ -203,12 +258,14 @@ public class AffectationMatiereFrame extends JFrame {
 
 
 
-    }
-
-    }
 
 
 
-    // Ajoute ici une JComboBox d'enseignants + une JComboBox de matières, et un bouton "Affecter"
-    }
+
+
+
+
+
+
+
 
