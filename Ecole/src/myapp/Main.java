@@ -9,7 +9,7 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) {
         // SwingUtilities.invokeLater(() -> {
-        new AdminePage();
+       //new StudentPage().setVisible(true);
         //});
-
+ new AdminePage();
     }}
