@@ -79,14 +79,16 @@ public class Login  extends JFrame {
                     if (u != null) {
                         dispose(); // Close login window
                         switch (u.getRole()) {
-                            case "personnel":
+                            case "admin":
                                 new AdminePage();
                                 break;
-                            case "enseignat":
+                            case "enseignant":
                                 new EnseigPage();
                                 break;
-                            case "etudiant ":{
-                                 new StudentPage();
+                            case "etudiant":{
+                            	 
+                         	        new StudentPage().showPage();
+                         	    
 		                  
                                 break;
 

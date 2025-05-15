@@ -165,7 +165,7 @@ public class StudentPage extends JFrame {
         // --- Gauche : Liste des noms/prénoms ---
         DefaultListModel<String> listModel = new DefaultListModel<>();
         for (Enseignant e : liste) {
-            listModel.addElement(e.getNom() + " " + e.getPrenom());
+            listModel.addElement(e.getNom() + "    " + e.getPrenom());
         }
         
         JList<String> listeNoms = new JList<>(listModel);

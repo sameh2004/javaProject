@@ -11,5 +11,5 @@ public class Main {
         // SwingUtilities.invokeLater(() -> {
        //new StudentPage().setVisible(true);
         //});
- new AdminePage();
+ new Login();
     }}
