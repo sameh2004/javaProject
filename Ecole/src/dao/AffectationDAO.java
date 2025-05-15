@@ -13,7 +13,7 @@ public  class AffectationDAO implements IDAO<Affectation> {
 
     @Override
     public boolean add(Affectation affectation) throws SQLException {
-        String sql = "INSERT INTO AffectationMatEns (matiere_id, enseignant_id, nbr_heures) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO AffectationMatEns (id_matiere, id_enseignant, nbr_heures) VALUES (?, ?, ?)";
 
         try (Connection cx=SingletonConnection.getInstance();
              PreparedStatement pstmt = cx.prepareStatement(sql)) {
